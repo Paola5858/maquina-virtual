@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card card-custom p-4">
+  <h4>{{ view.object|default_if_none:"Nova Turma" }}</h4>
+  <form method="post">{% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="mb-3">{{ form.nome.label_tag }}{{ form.nome }}</div>
+    <div class="mb-3">{{ form.carga_horaria.label_tag }}{{ form.carga_horaria }}</div>
+    <div class="mb-3">{{ form.conteudo.label_tag }}{{ form.conteudo }}</div>
+    <div class="d-flex gap-2">
+      <button class="btn btn-primary" type="submit">Salvar</button>
+      <a class="btn btn-outline-secondary" href="{% url 'escola:listar_turma' %}">Voltar</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

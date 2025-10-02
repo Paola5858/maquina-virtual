@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card card-custom p-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4>Alunos</h4>
+    <div>
+      <a class="btn btn-outline-primary" href="{% url 'escola:novo_aluno' %}">+ Novo aluno</a>
+    </div>
+  </div>
+
+  <form method="get" class="mb-3">
+    <div class="input-group">
+      <input type="search" name="q" value="{{ request.GET.q }}" class="form-control" placeholder="Pesquisar por nome, e-mail ou CPF">
+      <button class="btn btn-secondary">Pesquisar</button>
+    </div>
+  </form>
+
+  <table class="table table-hover">
+    <thead><tr><th>Nome</th><th>Email</th><th>CPF</th><th></th></tr></thead>
+    <tbody>
+    {% for aluno in object_list %}
+      <tr>
+        <td>{{ aluno.nome }}</td>
+        <td>{{ aluno.email }}</td>
+        <td>{{ aluno.cpf }}</td>
+        <td class="text-end">
+          <a class="btn btn-sm btn-outline-secondary" href="{% url 'escola:editar_aluno' aluno.pk %}">Editar</a>
+          <a class="btn btn-sm btn-outline-danger" href="{% url 'escola:excluir_aluno' aluno.pk %}">Excluir</a>
+        </td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="4">Nenhum aluno cadastrado.</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  {% if is_paginated %}
+    <nav>
+      <ul class="pagination">
+        {% if page_obj.has_previous %}
+          <li class="page-item"><a class="page-link" href="?q={{ request.GET.q }}&page={{ page_obj.previous_page_number }}">Anterior</a></li>
+        {% endif %}
+        <li class="page-item disabled"><span class="page-link">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span></li>
+        {% if page_obj.has_next %}
+          <li class="page-item"><a class="page-link" href="?q={{ request.GET.q }}&page={{ page_obj.next_page_number }}">Próxima</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+  {% endif %}
+</div>
+{% endblock %}

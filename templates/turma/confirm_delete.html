@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card card-custom p-4 text-center">
+  <h4>Confirma exclusão?</h4>
+  <p>Deseja remover a turma <strong>{{ object.nome }}</strong>?</p>
+  <form method="post">{% csrf_token %}
+    <button class="btn btn-danger" type="submit">Sim, excluir</button>
+    <a class="btn btn-secondary" href="{% url 'escola:listar_turma' %}">Cancelar</a>
+  </form>
+</div>
+{% endblock %}

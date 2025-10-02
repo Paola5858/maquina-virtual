@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card card-custom p-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h4>Vínculos Aluno ↔ Turma</h4>
+    <a class="btn btn-outline-primary" href="{% url 'escola:novo_turma_aluno' %}">+ Novo Vínculo</a>
+  </div>
+
+  <table class="table table-hover">
+    <thead><tr><th>Aluno</th><th>Turma</th></tr></thead>
+    <tbody>
+    {% for vinculo in object_list %}
+      <tr>
+        <td>{{ vinculo.aluno.nome }}</td>
+        <td>{{ vinculo.turma.nome }}</td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="2">Nenhum vínculo encontrado.</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  {% if is_paginated %}
+    <nav>
+      <ul class="pagination">
+        {% if page_obj.has_previous %}
+          <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Anterior</a></li>
+        {% endif %}
+        <li class="page-item disabled"><span class="page-link">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span></li>
+        {% if page_obj.has_next %}
+          <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Próxima</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+  {% endif %}
+</div>
+{% endblock %}

@@ -130,3 +130,45 @@ class TurmaAlunoCreateView(CreateView):
     def form_valid(self, form):
         messages.success(self.request, "Vínculo criado!")
         return super().form_valid(form)
+
+
+class TurmaAlunoUpdateView(UpdateView):
+    model = TurmaAluno
+    form_class = TurmaAlunoForm
+    template_name = "turma_aluno/form.html"
+    success_url = reverse_lazy("escola:listar_turma_aluno")
+
+    def form_valid(self, form):
+        messages.success(self.request, "Vínculo atualizado!")
+        return super().form_valid(form)
+
+
+class TurmaAlunoDeleteView(DeleteView):
+    model = TurmaAluno
+    template_name = "turma_aluno/confirm_delete.html"
+    success_url = reverse_lazy("escola:listar_turma_aluno")
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(request, "Vínculo removido.")
+        return super().delete(request, *args, **kwargs)
+
+
+class TurmaAlunoUpdateView(UpdateView):
+    model = TurmaAluno
+    form_class = TurmaAlunoForm
+    template_name = "turma_aluno/form.html"
+    success_url = reverse_lazy("escola:listar_turma_aluno")
+
+    def form_valid(self, form):
+        messages.success(self.request, "Vínculo atualizado!")
+        return super().form_valid(form)
+
+
+class TurmaAlunoDeleteView(DeleteView):
+    model = TurmaAluno
+    template_name = "turma_aluno/confirm_delete.html"
+    success_url = reverse_lazy("escola:listar_turma_aluno")
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(request, "Vínculo removido.")
+        return super().delete(request, *args, **kwargs)

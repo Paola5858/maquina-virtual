@@ -3,19 +3,32 @@
 <div class="card card-custom p-4">
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h4>Vínculos Aluno ↔ Turma</h4>
-    <a class="btn btn-outline-primary" href="{% url 'escola:novo_turma_aluno' %}">+ Novo Vínculo</a>
+    <div>
+      <a class="btn btn-outline-primary" href="{% url 'escola:novo_turma_aluno' %}">+ Novo Vínculo</a>
+    </div>
   </div>
 
+  <form method="get" class="mb-3">
+    <div class="input-group">
+      <input type="search" name="q" value="{{ request.GET.q }}" class="form-control" placeholder="Pesquisar por aluno ou turma">
+      <button class="btn btn-secondary">Pesquisar</button>
+    </div>
+  </form>
+
   <table class="table table-hover">
-    <thead><tr><th>Aluno</th><th>Turma</th></tr></thead>
+    <thead><tr><th>Aluno</th><th>Turma</th><th></th></tr></thead>
     <tbody>
     {% for vinculo in object_list %}
       <tr>
         <td>{{ vinculo.aluno.nome }}</td>
         <td>{{ vinculo.turma.nome }}</td>
+        <td class="text-end">
+          <a class="btn btn-sm btn-outline-secondary" href="{% url 'escola:editar_turma_aluno' vinculo.pk %}">Editar</a>
+          <a class="btn btn-sm btn-outline-danger" href="{% url 'escola:excluir_turma_aluno' vinculo.pk %}">Excluir</a>
+        </td>
       </tr>
     {% empty %}
-      <tr><td colspan="2">Nenhum vínculo encontrado.</td></tr>
+      <tr><td colspan="3">Nenhum vínculo encontrado.</td></tr>
     {% endfor %}
     </tbody>
   </table>

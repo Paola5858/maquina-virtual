@@ -2,10 +2,10 @@
 {% block content %}
 <div class="card card-custom p-4 text-center">
   <h4>Confirma exclusão?</h4>
-  <p>Deseja remover a turma <strong>{{ object.nome }}</strong>?</p>
+  <p>Deseja remover o vínculo <strong>{{ object }}</strong>?</p>
   <form method="post">{% csrf_token %}
     <button class="btn btn-danger" type="submit">Sim, excluir</button>
-    <a class="btn btn-secondary" href="{% url 'escola:listar_turma' %}">Cancelar</a>
+    <a class="btn btn-secondary" href="{% url 'escola:listar_turma_aluno' %}">Cancelar</a>
   </form>
 </div>
 {% endblock %}

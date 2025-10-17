@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row">
+  <div class="col-12">
+    <h1 class="mb-4 text-center">Painel da Escola</h1>
+  </div>
+</div>
+
+<div class="row g-4">
+  <!-- Card Alunos -->
+  <div class="col-md-4">
+    <div class="card card-custom h-100">
+      <div class="card-body text-center">
+        <h5 class="card-title">Alunos</h5>
+        <h2 class="text-primary">{{ total_alunos }}</h2>
+        <p class="card-text">Total de alunos cadastrados</p>
+        <a href="{% url 'escola:listar_aluno' %}" class="btn btn-primary">Ver Alunos</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card Turmas -->
+  <div class="col-md-4">
+    <div class="card card-custom h-100">
+      <div class="card-body text-center">
+        <h5 class="card-title">Turmas</h5>
+        <h2 class="text-success">{{ total_turmas }}</h2>
+        <p class="card-text">Total de turmas disponíveis</p>
+        <a href="{% url 'escola:listar_turma' %}" class="btn btn-success">Ver Turmas</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card Matrículas -->
+  <div class="col-md-4">
+    <div class="card card-custom h-100">
+      <div class="card-body text-center">
+        <h5 class="card-title">Matrículas</h5>
+        <h2 class="text-info">{{ total_matriculas }}</h2>
+        <p class="card-text">Total de vínculos aluno-turma</p>
+        <a href="{% url 'escola:listar_turma_aluno' %}" class="btn btn-info">Ver Matrículas</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

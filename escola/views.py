@@ -1,9 +1,23 @@
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.db.models import Q
 from .models import Aluno, Turma, TurmaAluno
 from .forms import AlunoForm, TurmaForm, TurmaAlunoForm
+
+
+# ============================
+# Home
+# ============================
+class HomeView(TemplateView):
+    template_name = 'home.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['total_alunos'] = Aluno.objects.count()
+        context['total_turmas'] = Turma.objects.count()
+        context['total_matriculas'] = TurmaAluno.objects.count()
+        return context
 
 
 # Mixin para busca e paginação

@@ -36,6 +36,28 @@ class SearchListView(ListView):
         return Q()  # Override nas subclasses
 
 
+# Mixin avançado para busca múltipla e otimização de queries
+class AdvancedSearchListView(SearchListView):
+    def get_queryset(self):
+        qs = super().get_queryset()
+        # Otimização com select_related para evitar N+1 queries
+        if hasattr(self.model, 'aluno') and hasattr(self.model, 'turma'):
+            qs = qs.select_related('aluno', 'turma')
+        return qs
+
+    def search_filter(self, q):
+        # Busca múltipla por termos separados por espaço
+        terms = q.split()
+        filters = Q()
+        for term in terms:
+            filters |= self.get_search_filters(term)
+        return filters
+
+    def get_search_filters(self, term):
+        # Override nas subclasses para definir filtros específicos
+        return Q()
+
+
 # ============================
 # Aluno
 # ============================
@@ -126,13 +148,13 @@ class TurmaDeleteView(DeleteView):
 # ============================
 # TurmaAluno (vínculo)
 # ============================
-class TurmaAlunoListView(SearchListView):
+class TurmaAlunoListView(AdvancedSearchListView):
     model = TurmaAluno
     template_name = "turma_aluno/list.html"
     paginate_by = 10
 
-    def search_filter(self, q):
-        return Q(aluno__nome__icontains=q) | Q(turma__nome__icontains=q)
+    def get_search_filters(self, term):
+        return Q(aluno__nome__icontains=term) | Q(turma__nome__icontains=term)
 
 
 class TurmaAlunoCreateView(CreateView):
@@ -144,27 +166,6 @@ class TurmaAlunoCreateView(CreateView):
     def form_valid(self, form):
         messages.success(self.request, "Vínculo criado!")
         return super().form_valid(form)
-
-
-class TurmaAlunoUpdateView(UpdateView):
-    model = TurmaAluno
-    form_class = TurmaAlunoForm
-    template_name = "turma_aluno/form.html"
-    success_url = reverse_lazy("escola:listar_turma_aluno")
-
-    def form_valid(self, form):
-        messages.success(self.request, "Vínculo atualizado!")
-        return super().form_valid(form)
-
-
-class TurmaAlunoDeleteView(DeleteView):
-    model = TurmaAluno
-    template_name = "turma_aluno/confirm_delete.html"
-    success_url = reverse_lazy("escola:listar_turma_aluno")
-
-    def delete(self, request, *args, **kwargs):
-        messages.success(request, "Vínculo removido.")
-        return super().delete(request, *args, **kwargs)
 
 
 class TurmaAlunoUpdateView(UpdateView):

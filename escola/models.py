@@ -4,9 +4,29 @@ from django.core.exceptions import ValidationError
 import re
 
 def validar_cpf(value):
-    # validação simples de formato (apenas dígitos; aqui não implementamos algoritmo do CPF)
+    # Validação completa do CPF com algoritmo oficial
     if not re.fullmatch(r"\d{11}", value):
         raise ValidationError("CPF deve ter 11 dígitos numéricos (ex: 12345678901).")
+
+    # Verifica se todos os dígitos são iguais (CPF inválido)
+    if value == value[0] * 11:
+        raise ValidationError("CPF inválido.")
+
+    # Calcula o primeiro dígito verificador
+    soma = sum(int(value[i]) * (10 - i) for i in range(9))
+    resto = (soma * 10) % 11
+    if resto == 10:
+        resto = 0
+    if resto != int(value[9]):
+        raise ValidationError("CPF inválido.")
+
+    # Calcula o segundo dígito verificador
+    soma = sum(int(value[i]) * (11 - i) for i in range(10))
+    resto = (soma * 10) % 11
+    if resto == 10:
+        resto = 0
+    if resto != int(value[10]):
+        raise ValidationError("CPF inválido.")
 
 class Aluno(models.Model):
     nome = models.CharField("Nome", max_length=120)

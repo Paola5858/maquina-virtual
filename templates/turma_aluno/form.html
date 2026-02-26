@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="card card-custom p-4">
-  <h4>Novo Vínculo</h4>
+  <h4>{% if object %}Editar Vínculo{% else %}Novo Vínculo{% endif %}</h4>
   <form method="post">{% csrf_token %}
     {{ form.non_field_errors }}
     <div class="mb-3">{{ form.aluno.label_tag }}{{ form.aluno }}</div>

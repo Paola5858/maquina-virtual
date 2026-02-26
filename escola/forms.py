@@ -1,5 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
+from datetime import date
 import re
 from .models import Aluno, Turma, TurmaAluno
 
@@ -39,9 +40,7 @@ class AlunoForm(BaseModelForm):
         dt_nascimento = cleaned_data.get('dt_nascimento')
         responsavel = cleaned_data.get('responsavel')
 
-        # Validação cross-field: se menor de idade, responsável obrigatório
         if dt_nascimento:
-            from datetime import date
             idade = (date.today() - dt_nascimento).days // 365
             if idade < 18 and not responsavel:
                 raise ValidationError("Responsável é obrigatório para menores de 18 anos.")
